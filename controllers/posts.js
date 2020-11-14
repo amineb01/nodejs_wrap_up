@@ -1,4 +1,5 @@
 var Post = require('../models/Post')
+var upload = require('../helpers/multerConfig')
 const postController = (express) => {
   const router = express.Router();
 
@@ -28,12 +29,13 @@ const postController = (express) => {
     })
   });
 
-  router.post('/', function(req, res) {
+  router.post('/', upload.single('image'), function(req, res) {
     const name = req.body.name;
     let post = new Post({
       title: req.body.title,
       body: req.body.body,
-      user: req.body.user
+      user: req.body.user,
+      image: req.file.path,
     })
 
     post.save().then(result => {

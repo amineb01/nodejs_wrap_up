@@ -6,6 +6,7 @@ const PostSchema = new Schema({
   title:{ type:String, required:true },
   body: { type:String, required:true },
   date: Date,
+  image:{ type:String, required:true },
   user: { type: Schema.Types.ObjectId, ref: 'User', required:true },
 });
 
