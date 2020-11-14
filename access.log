@@ -30,3 +30,7 @@
 127.0.0.1 - - [14/Nov/2020:17:28:32 +0000] "POST /users HTTP/1.1" 500 96 "-" "PostmanRuntime/7.26.8"
 127.0.0.1 - - [14/Nov/2020:17:30:03 +0000] "POST /users HTTP/1.1" 500 96 "-" "PostmanRuntime/7.26.8"
 127.0.0.1 - - [14/Nov/2020:17:30:24 +0000] "POST /users HTTP/1.1" 500 96 "-" "PostmanRuntime/7.26.8"
+127.0.0.1 - - [14/Nov/2020:17:38:28 +0000] "POST /posts HTTP/1.1" 500 103 "-" "PostmanRuntime/7.26.8"
+127.0.0.1 - - [14/Nov/2020:17:38:46 +0000] "POST /posts HTTP/1.1" 500 99 "-" "PostmanRuntime/7.26.8"
+127.0.0.1 - - [14/Nov/2020:17:39:37 +0000] "POST /posts HTTP/1.1" 500 99 "-" "PostmanRuntime/7.26.8"
+127.0.0.1 - - [14/Nov/2020:18:22:05 +0000] "POST /posts HTTP/1.1" 500 99 "-" "PostmanRuntime/7.26.8"
