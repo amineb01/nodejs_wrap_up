@@ -1,17 +1,18 @@
-var Post = require('../models/Post')
-const postController = (express) => {
+var User = require('../models/User')
+var { generatePassword, verifyPassword } = require('../helpers/bycryptPasswordHandling')
+
+const userController = (express) => {
   const router = express.Router();
 
   // middleware that is specific to this router
   router.use((req, res, next) => {
-    console.log('Time to access posts route: ', new Date().toLocaleDateString("en-US"));
+    console.log('Time to access users route: ', new Date().toLocaleDateString("en-US"));
     next();
   });
 
   router.get('/', function(req, res) {
-    Post.find()
-        .select('_id title body user_id ')
-        .populate('user', 'name')
+    User.find()
+        .select('_id title body')
         .then(results => {
         res.status(201).json({
           message: 'success',
@@ -28,17 +29,17 @@ const postController = (express) => {
     })
   });
 
-  router.post('/', function(req, res) {
-    const name = req.body.name;
-    let post = new Post({
-      title: req.body.title,
-      body: req.body.body,
-      user: req.body.user
+  router.post('/', async function(req, res) {
+    let cryptedPwd = await generatePassword(req.body.password)
+    let user = new User({
+      name: req.body.name,
+      email: req.body.email,
+      password: cryptedPwd,
     })
 
-    post.save().then(result => {
+    user.save().then(result => {
         res.status(201).json({
-          message: 'post created ',
+          message: 'user created ',
           data: result
         });
       }
@@ -54,7 +55,7 @@ const postController = (express) => {
 
 
   router.get('/:id', (req, res) => {
-    Post.findById(req.params.id).then(result => {
+    User.findById(req.params.id).then(result => {
         res.status(201).json({
           message: 'success',
           data: result
@@ -75,4 +76,4 @@ const postController = (express) => {
 
 
 
-module.exports = postController;
+module.exports = userController;
