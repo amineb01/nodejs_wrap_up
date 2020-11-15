@@ -1,5 +1,6 @@
 var Post = require('../models/Post')
 var upload = require('../helpers/multerConfig')
+var verifyToken= require('../middlewares/verifyToken')
 const postController = (express) => {
   const router = express.Router();
 
@@ -9,8 +10,8 @@ const postController = (express) => {
     next();
   });
 
-  router.get('/', function(req, res) {
-    Post.find()
+  router.get('/', verifyToken, function(req, res) {
+    Post.find({user: req.headers.id})
         .select('_id title body user_id ')
         .populate('user', 'name')
         .then(results => {
@@ -29,7 +30,7 @@ const postController = (express) => {
     })
   });
 
-  router.post('/', upload.single('image'), function(req, res) {
+  router.post('/', verifyToken, upload.single('image'), function(req, res) {
     const name = req.body.name;
     let post = new Post({
       title: req.body.title,
@@ -55,7 +56,7 @@ const postController = (express) => {
   });
 
 
-  router.get('/:id', (req, res) => {
+  router.get('/:id', verifyToken,  (req, res) => {
     Post.findById(req.params.id).then(result => {
         res.status(201).json({
           message: 'success',
