@@ -6,6 +6,7 @@ require('./helpers/dbConnect')
 require('./helpers/handlingCors')(app)
 require('./helpers/logging')(app)
 require('./helpers/bodyParser')(app)
+require('./helpers/cronJob')()
 
 require('./router/index')(app)
 
