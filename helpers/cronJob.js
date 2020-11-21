@@ -7,12 +7,12 @@ const runCronJob = ()=>{
   cron.schedule('* * * * *', () => {
     console.log('running a task every minute');
   });
-  
+
   cron.schedule('* * * * *', () => {
     User.find().select('email')
         .then(users => {
           let emails= users.map(user=>user.email)
-          sendMail(emails.toString())
+          // sendMail(emails.toString())
       })
   });
 

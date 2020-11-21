@@ -1,6 +1,8 @@
 var Post = require('../models/Post')
 var upload = require('../helpers/multerConfig')
 var verifyToken= require('../middlewares/verifyToken')
+var {setPost, getPosts, getOnePost} = require('../middlewares/posts')
+
 const postController = (express) => {
   const router = express.Router();
 
@@ -10,68 +12,109 @@ const postController = (express) => {
     next();
   });
 
-  router.get('/', verifyToken, function(req, res) {
-    Post.find({user: req.headers.id})
-        .select('_id title body user_id ')
-        .populate('user', 'name')
-        .then(results => {
-        res.status(201).json({
+  router.get('/',
+    function(req, res, next) {
+      verifyToken(req, res)
+      .then( userId =>{
+        req.headers.id = userId;
+         next()
+       })
+      .catch( error => {
+        return res.status(401).json({
+          message: error,
+          error: 'invalid token'
+        });
+      })
+      .done()
+    },
+
+    function(req, res, next) {
+      getPosts(req, res)
+      .then( results =>{
+        return res.status(201).json({
           message: 'success',
-          data: results,
-          count: results.length
+          results,
         });
-      }
-
-    ).catch(error => {
-      res.status(500).json({
-        message: 'An error has occured' ,
-        error:  error
-      });
-    })
-  });
-
-  router.post('/', verifyToken, upload.single('image'), function(req, res) {
-    const name = req.body.name;
-    let post = new Post({
-      title: req.body.title,
-      body: req.body.body,
-      user: req.body.user,
-      image: req.file.path,
-    })
-
-    post.save().then(result => {
-        res.status(201).json({
-          message: 'post created ',
-          data: result
+       })
+      .catch( error => {
+        return res.status(500).json({
+          message: 'An error has occured' ,
+          error:  error
         });
-      }
+      })
+      .done()
+    }
+  );
 
-    ).catch(error => {
-      res.status(500).json({
-        message: 'An error has occured',
-        error: error.message
-      });
-    })
-
-  });
-
-
-  router.get('/:id', verifyToken,  (req, res) => {
-    Post.findById(req.params.id).then(result => {
-        res.status(201).json({
-          message: 'success',
-          data: result
+  router.post('/',
+    function(req, res, next) {
+      verifyToken(req, res)
+      .then( userId =>{
+         next()
+       })
+      .catch( error => {
+        return res.status(401).json({
+          message: error,
+          error: 'invalid token'
         });
-      }
+      })
+      .done()
+    },
+    
+    upload.single('image'),
 
-    ).catch(error => {
-      res.status(500).json({
-        message: 'An error has occured' ,
-        error:  error
-      });
-    })
+    function(req, res, next) {
+      getOnePost(req, res)
+      .then( results =>{
+        return res.status(201).json({
+          message: 'post created',
+          results,
+        });
+       })
+      .catch( error => {
+        return res.status(500).json({
+          message: 'An error has occured' ,
+          error:  error
+        });
+      })
+      .done()
+    }
+ );
 
-  })
+
+  router.get('/:id',
+    function(req, res, next) {
+      verifyToken(req, res)
+      .then( userId =>{
+         next()
+       })
+      .catch( error => {
+        return res.status(401).json({
+          message: error,
+          error: 'invalid token'
+        });
+      })
+      .done()
+    },
+
+    function(req, res, next) {
+      getOnePost(req, res)
+      .then( results =>{
+        return res.status(201).json({
+          message: 'post found',
+          results,
+        });
+       })
+      .catch( error => {
+        return res.status(500).json({
+          message: 'post not found' ,
+          error:  error
+        });
+      })
+      .done()
+    }
+
+  )
 
   return router
 }
