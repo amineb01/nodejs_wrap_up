@@ -1,20 +1,21 @@
 var { verifyPassword } = require('../helpers/bycryptPasswordHandling')
+var Q = require('q');
+var deferred
 
-
-const checkPassword = (req, res, next) => {
+const checkPassword = (req, res) => {
+  deferred = Q.defer();
   verifyPassword(req.body.password, req.body.cryptedPassword).then(result=>{
-    console.log(result)
     if(!result){
-      return res.status(401).json({
-         message: 'An error has occured',
-         error: 'user not found'
-       });
+      deferred.reject('password not match');
     }else{
-      next()
+      deferred.resolve();
     }
   })
+  .catch(error => {
+    deferred.reject(error.message);
+  })
 
+  return deferred.promise;
 }
-
 
 module.exports = checkPassword;

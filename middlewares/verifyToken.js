@@ -1,29 +1,25 @@
 var jwt = require('jsonwebtoken');
+var Q = require('q');
+var deferred
 
 
-const verifyToken = (req, res, next) => {
+
+const verifyToken = (req, res) => {
+  deferred = Q.defer();
   let token = req.headers.token
   if (!token) {
-    return res.status(401).json({
-      message: 'token is required',
-      error: 'invalid token'
-    });
+    deferred.reject('token is required');
   } else {
-    var decoded = jwt.verify(token, process.env.privateKey);
-    if (decoded) {
-      req.headers.id = decoded.data.id
-      next()
-    } else {
-      return res.status(401).json({
-        message: 'token is invalid',
-        error: 'invalid token'
-      });
-    }
+    var decoded = jwt.verify(token, process.env.privateKey, function(err, decoded) {
+      if (decoded) {
+        deferred.resolve( decoded.data.id);
+      } else {
+        deferred.reject('token is invalid');
+      }
+    });
+
   }
-
+  return deferred.promise;
 }
-
-
-
 
 module.exports = verifyToken;
