@@ -1,7 +1,7 @@
 var Post = require('../models/Post')
 var upload = require('../helpers/multerConfig')
-var verifyToken= require('../middlewares/verifyToken')
-var {setPost, getPosts, getOnePost} = require('../middlewares/posts')
+var { verifyToken }= require('../middlewares/token')
+var { setPost, getPosts, getOnePost } = require('../middlewares/posts')
 
 const postController = (express) => {
   const router = express.Router();
@@ -60,7 +60,7 @@ const postController = (express) => {
       })
       .done()
     },
-    
+
     upload.single('image'),
 
     function(req, res, next) {

@@ -1,7 +1,8 @@
 var User = require('../models/User')
 var checkUserByEmail = require('../middlewares/checkUserByEmail')
-var verifyPassword = require('../middlewares/verifyPassword')
-var generateToken = require('../middlewares/generateToken')
+var { generateToken } = require('../middlewares/token')
+var { generatePassword, checkPassword } = require('../middlewares/password')
+
 
 var { setUser, getUsers } = require('../middlewares/users')
 
@@ -34,6 +35,19 @@ router.get('/',
 
 router.post('/signup',
   function(req, res, next) {
+    generatePassword(req, res)
+    .then( () =>{
+      next()
+     })
+    .catch( error => {
+      return res.status(500).json({
+        message: 'An error has occured' ,
+        error:  error
+      });
+    })
+
+  },
+  function(req, res, next) {
     setUser(req, res)
     .then( result =>{
       return res.status(201).json({
@@ -47,7 +61,7 @@ router.post('/signup',
         error:  error
       });
     })
-    .done()
+
   });
 
 router.post('/signin',
@@ -60,10 +74,10 @@ router.post('/signin',
         error:  error
       });
     })
-    .done()
+
   },
   function(req, res, next) {
-    verifyPassword(req, res)
+    checkPassword(req, res)
     .then( result => next() )
     .catch( error => {
       return res.status(500).json({
@@ -76,7 +90,6 @@ router.post('/signin',
   function(req, res, next) {
     generateToken(req, res)
     .then( token => {
-      console.log("token", token)
       return res.status(201).json({
         message: 'user authenticated',
         data: {

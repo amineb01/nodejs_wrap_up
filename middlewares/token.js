@@ -2,6 +2,20 @@ var jwt = require('jsonwebtoken');
 var Q = require('q');
 var deferred
 
+const generateToken = (req, res) => {
+  deferred = Q.defer();
+  try {
+    var token = jwt.sign({exp: Math.floor(Date.now() / 1000) + (60 * 60 *24),
+                         data:{ email: req.body.email, name: req.body.name, id: req.body.id }},
+                         process.env.privateKey);
+
+    deferred.resolve( token);
+  } catch (e) {
+    deferred.reject(e);
+  }
+
+  return deferred.promise;
+}
 
 
 const verifyToken = (req, res) => {
@@ -22,4 +36,4 @@ const verifyToken = (req, res) => {
   return deferred.promise;
 }
 
-module.exports = verifyToken;
+module.exports = {verifyToken, generateToken};

@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
-const generatePassword = async (myPlaintextPassword) => {
+const _generatePassword = async (myPlaintextPassword) => {
   let hashedPsswd = await bcrypt.hash(myPlaintextPassword, saltRounds)
   return hashedPsswd;
 }
@@ -12,4 +12,4 @@ const verifyPassword = async (myPlaintextPassword, hash) => {
 }
 
 
-module.exports = {generatePassword, verifyPassword}
+module.exports = {_generatePassword, verifyPassword}

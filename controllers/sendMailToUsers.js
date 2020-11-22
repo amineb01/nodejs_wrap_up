@@ -1,5 +1,5 @@
 var User = require('../models/User')
-var verifyToken= require('../middlewares/verifyToken')
+var { verifyToken }= require('../middlewares/token')
 var sendMail= require('../helpers/sendMail')
 
 const sendMailController = ( express ) => {
