@@ -4,6 +4,7 @@ var deferred
 
 const checkPassword = (req, res) => {
   deferred = Q.defer();
+  console.log(req.body.cryptedPassword)
   verifyPassword(req.body.password, req.body.cryptedPassword).then(result=>{
     if(!result){
       deferred.reject('password not match');

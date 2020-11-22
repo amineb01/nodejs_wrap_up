@@ -4,7 +4,7 @@
   "description": "node app wrap up ",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha --reporter spec",
     "start": "nodemon index.js"
   },
   "author": "Amine Bellarej",
@@ -26,6 +26,10 @@
     "save": "^2.4.0"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "mocha": "^8.2.1",
+    "node-mocks-http": "^1.9.0",
     "nodemon": "^2.0.6"
   }
 }

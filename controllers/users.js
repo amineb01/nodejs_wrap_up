@@ -2,6 +2,8 @@ var User = require('../models/User')
 var checkUserByEmail = require('../middlewares/checkUserByEmail')
 var verifyPassword = require('../middlewares/verifyPassword')
 var generateToken = require('../middlewares/generateToken')
+var generatePassword = require('../middlewares/generatePassword')
+
 
 var { setUser, getUsers } = require('../middlewares/users')
 
@@ -34,6 +36,19 @@ router.get('/',
 
 router.post('/signup',
   function(req, res, next) {
+    generatePassword(req, res)
+    .then( () =>{
+      next()
+     })
+    .catch( error => {
+      return res.status(500).json({
+        message: 'An error has occured' ,
+        error:  error
+      });
+    })
+
+  },
+  function(req, res, next) {
     setUser(req, res)
     .then( result =>{
       return res.status(201).json({
@@ -47,7 +62,7 @@ router.post('/signup',
         error:  error
       });
     })
-    .done()
+
   });
 
 router.post('/signin',
@@ -60,7 +75,7 @@ router.post('/signin',
         error:  error
       });
     })
-    .done()
+
   },
   function(req, res, next) {
     verifyPassword(req, res)

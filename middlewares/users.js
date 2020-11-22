@@ -1,6 +1,5 @@
 var User = require('../models/User')
 var Q = require('q');
-var { generatePassword } = require('../helpers/bycryptPasswordHandling')
 var deferred
 
 const getUsers = (req, res) => {
@@ -21,27 +20,18 @@ const getUsers = (req, res) => {
 
 const setUser = (req, res) => {
   deferred = Q.defer();
-  generatePassword( req.body.password ).then(cryptedPwd=>{
-    console.log('1')
     let user = new User({
       name: req.body.name,
       email: req.body.email,
-      password: cryptedPwd,
+      password: req.body.password,
     })
-
     user.save()
     .then(result => {
-      console.log('2')
       deferred.resolve(result)
     })
     .catch(error => {
-      console.log('3')
       deferred.reject(error.message);
     })
-  }).catch(error => {
-    console.log('4')
-    deferred.reject(error.message);
-  })
 
   return deferred.promise;
 }
