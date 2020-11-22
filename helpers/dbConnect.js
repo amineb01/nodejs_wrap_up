@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-
-const db_name = 'nodeWrapUp'
+let config = require('config');
+const db_name = config.DBHost
 const db_server = 'localhost'
 
 mongoose.connect(`mongodb://${db_server}/${db_name}`, {
