@@ -3,12 +3,17 @@ var Q = require('q');
 var deferred
 
 const generateToken = (req, res) => {
-  console.log(process.env.privateKey)
   deferred = Q.defer();
-  var token = jwt.sign({exp: Math.floor(Date.now() / 1000) + (60 * 60 *24),
-                       data:{ email: req.body.email, name: req.body.name, id: req.body.id }},
-                       process.env.privateKey);
-  deferred.resolve( token);
+  try {
+    var token = jwt.sign({exp: Math.floor(Date.now() / 1000) + (60 * 60 *24),
+                         data:{ email: req.body.email, name: req.body.name, id: req.body.id }},
+                         process.env.privateKey);
+
+    deferred.resolve( token);
+  } catch (e) {
+    deferred.reject(e);
+  }
+
   return deferred.promise;
 }
 
