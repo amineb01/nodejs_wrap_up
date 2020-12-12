@@ -4,7 +4,7 @@
   "description": "node app wrap up ",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --reporter spec",
+    "test": "mocha --reporter spec --exit",
     "start": "nodemon index.js"
   },
   "author": "Amine Bellarej",
