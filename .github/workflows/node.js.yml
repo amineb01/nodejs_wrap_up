@@ -26,6 +26,10 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
+      - name: Remove old containers
+        run: |
+          docker container rm -f express-mongo  
+          docker container rm -f mongo      
       - name: Create env file
         run: |
           touch .env
