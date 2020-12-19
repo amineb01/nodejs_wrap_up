@@ -35,3 +35,5 @@ jobs:
           npm run test --if-present
         env:
           CI: true
+      - name: run docker compose
+        run: docker-compose up --build -d  
