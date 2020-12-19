@@ -26,19 +26,19 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-      - name: Make envfile
-        uses: SpicyPizza/create-envfile@v1
-        with:
-          PORT: 3001
-          privateKey: ${{ secrets.SECRET_KEY }}
-          SERVER: 0.0.0.0
-          GOOGLE_USER: ${{ secrets.SECRET_KEY }}
-          GOOGLE_PASS: ${{ secrets.GOOGLE_PASS }}
-          DB_SERVER: mongo
-          DB_PORT: 27017
-          file_name: .env      
+      - name: Create env file
+        run: |
+          touch .env
+          echo PORT=3001 >> .env
+          echo SERVER=0.0.0.0 >> .env
+          echo GOOGLE_USER=${{ secrets.GOOGLE_USER }} >> .env
+          echo GOOGLE_PASS=${{ secrets.GOOGLE_PASS }} >> .env
+          echo DB_SERVER=mongo >> .env
+          echo DB_PORT=27017 >> .env
+          cat .env   
       - name: run docker compose
         run: docker-compose up --build -d  
+
       - name: npm install, build, and test
         run: |
           npm ci
