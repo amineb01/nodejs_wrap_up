@@ -1,0 +1,3 @@
+FROM mongo:latest
+VOLUME ~/Bureau/docker_test/mongo/data
+EXPOSE 27017

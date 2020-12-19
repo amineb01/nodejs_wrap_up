@@ -1,0 +1,27 @@
+[{
+    "_id": {
+      "$oid": "5fda0575a14be43064171366"
+    },
+    "reclamations": [],
+    "role": "citizen",
+    "name": "amine",
+    "email": "bellarej.amine2@gmail.com",
+    "password": "$2b$10$nsEYX0Yfd5y1JYQMX6hOd.P2ar6wmL0u/i1RFVlFN1B1h0drS7aoG",
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "5fdce021f5cb9566fbb2fce6"
+    },
+    "reclamations": [],
+    "role": "admin",
+    "name": "amine",
+    "email": "bellarej.amine@gmail.com",
+    "password": "$2b$10$scQsaHRWmu3L5WuQ9iFLbOfQ1qJ9Q3O6j0JbbRBfp4tRttKKduz9a",
+    "__v": {
+      "$numberInt": "0"
+    }
+  }
+]
