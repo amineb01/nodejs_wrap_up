@@ -1,0 +1,12 @@
+run mongo container
+  with envirement variable:
+  sudo docker run -d --name mongo-on-docker -p 27017:27017
+                  -v ~/Bureau/docker_test/mongo/data:/data/db
+                  -e MONGO_INITDB_ROOT_USERNAME=amine  -e MONGO_INITDB_ROOT_PASSWORD=amine
+                  mongo
+  with envirement variable file:
+  sudo docker run -d --name mongo-on-docker -p 27017:27017
+                  -v ~/Bureau/docker_test/mongo/data:/data/db
+                  --env-file ./env.list.mongo  mongo
+  with custom image:
+  sudo docker run -d --name mongo-on-docker -p 27017:27017 testmongo:v1  

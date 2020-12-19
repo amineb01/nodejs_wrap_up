@@ -1,0 +1,33 @@
+version: "3"
+services:
+  app:
+    container_name: express-mongo
+    restart: always
+    build: ./
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./models:/app/models
+      - ./middlewares:/app/middlewares
+      - ./controllers:/app/controllers
+    links:
+      - mongo
+    env_file:
+     - .env
+    depends_on:
+     - mongo
+  mongo:
+    container_name: mongo
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - /home/dev/Bureau/docker_test/mongo/data:/data/db
+
+  db-fixture:
+    build: ./db-fixture
+    container_name: db-fixture
+    links:
+      - mongo
+    depends_on:
+      - mongo
