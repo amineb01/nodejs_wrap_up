@@ -27,7 +27,7 @@ jobs:
           echo secretKey=${{ secrets.SECRET_KEY }} >> .env
           cat .env   
     - name: Start Docker for Mongodb
-      run: docker container rm -f mongo && docker run -d -p 27017:27017 mongo    
+      run: docker run -d -p 27017:27017 mongo    
     - name: npm install and test
       run: |
         npm install
