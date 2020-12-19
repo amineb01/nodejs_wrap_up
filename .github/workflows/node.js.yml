@@ -26,8 +26,8 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-      - name: Start Docker for Mongodb
-        run: docker run -d -p 27017:27017 mongo
+      - name: run docker compose
+        run: docker-compose up --build -d  
       - name: npm install, build, and test
         run: |
           npm ci
@@ -35,5 +35,4 @@ jobs:
           npm run test --if-present
         env:
           CI: true
-      - name: run docker compose
-        run: docker-compose up --build -d  
+      

@@ -25,13 +25,13 @@ describe('token ', () => {
   })
 
   describe('generate token', () => {
-    describe('not generate token if privateKey is not exist', () => {
+    // describe('not generate token if privateKey is not exist', () => {
 
-      it('token should not be generated', () => {
-        return expect(generateToken(req, res)).to.be.rejectedWith("secretOrPrivateKey must have a value");
-      });
+    //   it('token should not be generated', () => {
+    //     return expect(generateToken(req, res)).to.be.rejectedWith("secretOrPrivateKey must have a value");
+    //   });
 
-    });
+    // });
 
 
     describe('generate token if privateKey is exist', () => {
