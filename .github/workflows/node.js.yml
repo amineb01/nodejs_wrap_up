@@ -11,7 +11,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: self-hosted
     - name: Use Node.js 12.x
       uses: actions/setup-node@v1
       with:
@@ -25,6 +24,7 @@ jobs:
           echo GOOGLE_PASS=${{ secrets.GOOGLE_PASS }} >> .env
           echo DB_SERVER=localhost >> .env
           echo DB_PORT=27017 >> .env
+          echo secretKey=${{ secrets.SECRET_KEY }} >> .env
           cat .env   
     - name: Start Docker for Mongodb
       run: docker container rm -f mongo && docker run -d -p 27017:27017 mongo    
