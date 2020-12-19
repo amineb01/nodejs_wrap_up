@@ -7,25 +7,37 @@ on:
     branches: [ master ]
 
 jobs:
-  build-node:
-    runs-on: self-hosted
+  test:
+    runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v1
-      - name: Use Node.js 12.x
-        uses: actions/setup-node@v1
-        with:
-          node-version: 12.x
-      - name: Get npm cache directory
-        id: npm-cache
+    - uses: self-hosted
+    - name: Use Node.js 12.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+    - name: Create env file
         run: |
-          echo "::set-output name=dir::$(npm config get cache)"
-      - uses: actions/cache@v1
-        with:
-          path: ${{ steps.npm-cache.outputs.dir }}
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
+          touch .env
+          echo PORT=3000 >> .env
+          echo SERVER=0.0.0.0 >> .env
+          echo GOOGLE_USER=${{ secrets.GOOGLE_USER }} >> .env
+          echo GOOGLE_PASS=${{ secrets.GOOGLE_PASS }} >> .env
+          echo DB_SERVER=localhost >> .env
+          echo DB_PORT=27017 >> .env
+          cat .env      
+    - name: Start Docker for Mongodb
+        run: docker container rm -f mongo && docker run -d -p 27017:27017 mongo    
+    - name: npm install and test
+      run: |
+        npm install
+        npm test
+      env:
+        CI: true
+
+  build-node:
+    runs-on: self-hosted
+    steps:
       - name: Remove old containers
         run: |
           docker container rm -f express-mongo  
@@ -42,12 +54,6 @@ jobs:
           cat .env   
       - name: run docker compose
         run: docker-compose up --build -d  
-
-      - name: npm install, build, and test
-        run: |
-          npm ci
-          npm run build --if-present
-          npm run test --if-present
         env:
-          CI: true
+          CD: true
       
